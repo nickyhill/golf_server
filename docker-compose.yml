@@ -1,6 +1,14 @@
 version: '3'
 services:
-    web:
+  
+  sqlite3:
+    image: sqlite3:latest
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./data/:/var/www/apache-flask/data/  
+  
+  web:
         build: .
         ports:
           - "80:80"

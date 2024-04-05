@@ -3,12 +3,11 @@ import os
 
 
 class DatabaseAPI:
-    DATABASE = 'app/data/GolfServer.db'
-    SCHEMA_FILE = 'app/data/GolfServer.sql'
+    DATABASE = '/var/www/apache-flask/app/data/GolfServer.db'
+    SCHEMA_FILE = '/var/www/apache-flask/app/data/GolfServer.sql'
 
     @staticmethod
     def init_db():
-        pass
         connection = sqlite3.connect(DatabaseAPI.DATABASE)
 
         with open(DatabaseAPI.SCHEMA_FILE) as f:
