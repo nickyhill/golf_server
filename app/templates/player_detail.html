@@ -1,0 +1,66 @@
+{% extends "index.html" %}
+{% block part_of_site %}
+
+<div class="container" style="margin-top: 20px;">
+    <div class="player-detail">
+        <p class="h5"><strong>Statistics</strong></p>
+        <div class="container">
+            <div style="align-items: center; ">
+                <p class="h6" style="display: inline-block; padding-right: 10px">Score: {{ player_info.over_score }}</p>
+                <p class="h6" style="display: inline-block; border-left: 2px solid #ccc; padding-left: 10px">Holes played: {{ player_info.holes_play }}</p>
+            </div>
+            <p class="h6">Total Wins: {{ player_info.wins }}</p>
+        </div>
+        <div class="container" style="margin-top: 35px ">
+            <p class="h6" style="border-bottom: 2px solid grey; flex-grow: 1; width: 50%;"><strong>Matches</strong></p>
+            <table class="table matches-table">
+                <thead>
+                    <tr>
+                        <th scope="col">Match</th>
+                        <th scope="col">Match Date</th>
+                        <th scope="col">Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for match in player_matches %}
+                    <tr class="match-row">
+                        <td class="match-cell">{{ match.match_id }}</td>
+                        <td class="match-cell">{{ match.date }}</td>
+                        <td class="match-cell">{{ match.score }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<style>
+    .leaderboard-table,
+    .matches-table {
+        border-collapse: collapse;
+        width: 50%;
+    }
+
+    .leaderboard-table th,
+    .leaderboard-table td,
+    .matches-table th,
+    .matches-table td {
+        padding: 8px 12px;
+        text-align: left;
+    }
+
+    .leaderboard-row,
+    .match-row {
+        border-bottom: 1px solid #ddd;
+    }
+
+    .leaderboard-cell,
+    .match-cell {
+        white-space: nowrap;
+        width: 1%;
+        padding: 8px 12px;
+    }
+</style>
+
+{% endblock %}

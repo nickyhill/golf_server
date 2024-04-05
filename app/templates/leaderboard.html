@@ -1,0 +1,80 @@
+{% extends "index.html" %}
+{% block part_of_site %}
+
+<div class="container" style="margin-top: 20px;">
+    <div class="leaderboard">
+        <p class="h5"><strong>Leaderboard</strong></p>
+        <table class="table leaderboard-table">
+            <thead>
+                <tr>
+                    <th scope="col">Player</th>
+                    <th scope="col">Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for person in playersscore %}
+                <tr class="leaderboard-row">
+                    <td class="leaderboard-cell">{{ person[0] }}</td>
+                    <td class="leaderboard-cell">{{ person[1] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="matches" style="padding-top: 25px;">
+        <p class="h5"><strong>Matches</strong></p>
+        <table class="table matches-table">
+            <thead>
+                <tr>
+                    <th scope="col">Match</th>
+                    <th scope="col">Match Date</th>
+                    {% for player in playersname %}
+                        <th scope="col">{{ player }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for match in player_matches %}
+                <tr class="match-row">
+                    <td class="match-cell">{{ match[0] }}</td>
+                    <td class="match-cell">{{ match[1] }}</td>
+                    {% set len_matches = match | length %}
+                    {% for i in range(3, len_matches, 4)%}
+                        <td class="match-cell">{{ match[i] }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+    .leaderboard-table,
+    .matches-table {
+        border-collapse: collapse;
+        width: 50%;
+    }
+
+    .leaderboard-table th,
+    .leaderboard-table td,
+    .matches-table th,
+    .matches-table td {
+        padding: 8px 12px;
+        text-align: left;
+    }
+
+    .leaderboard-row,
+    .match-row {
+        border-bottom: 1px solid #ddd;
+    }
+
+    .leaderboard-cell,
+    .match-cell {
+        white-space: nowrap;
+        width: 1%;
+        padding: 8px 12px;
+    }
+</style>
+
+{% endblock %}

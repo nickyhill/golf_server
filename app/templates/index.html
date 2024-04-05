@@ -1,0 +1,73 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="container" style="margin-top: 20px;">
+    <div class="players">
+        <p class="h4"><strong>Players</strong></p>
+        <ul class="list-group list-group-horizontal">
+            <li class="list-group-item h6" data-player-id="overview" id="overview-link" onclick="selectPlayer(this)">Overview</li>
+            {% for player in players %}
+                <li class="list-group-item h6" data-player-id="{{player[0]}}" onclick="selectPlayer(this)">{{ player[1] }}</li>
+            {% endfor %}
+            <li class="list-group-item final" data-player-id="" onclick="selectPlayer(this)"></li>
+        </ul>
+
+        {% block part_of_site %}
+        {% endblock%}
+    </div>
+
+
+
+
+
+<script type="text/javascript">
+    function selectPlayer(element) {
+        // Remove 'select' class from all player items
+        const playerItems = document.querySelectorAll('.list-group-item');
+        playerItems.forEach(item => {
+            item.classList.remove('select');
+        });
+
+        // Add 'select' class to the clicked player item
+        element.classList.add('select');
+
+        // Get the player name or ID from the clicked element
+        const playerId = element.getAttribute('data-player-id');
+        console.log(playerId);
+
+        // Navigate to the specific URL
+        if (playerId === 'overview') {
+            window.location.href = '/overview';
+        } else {
+            window.location.href = `/player/${playerId}`; // Assuming you want to navigate to /player/{playerId}
+        }
+    }
+
+    // Update window location when Overview link is clicked
+    document.addEventListener('DOMContentLoaded', function () {
+        const overviewLink = document.getElementById('overview-link');
+        const playerItems = document.querySelectorAll('.list-group-item');
+
+        // Set 'select' class based on current URL or page state
+        const currentPath = window.location.pathname;
+
+        playerItems.forEach(item => {
+            const playerId = item.getAttribute('data-player-id');
+
+            if ((playerId === 'overview' && currentPath === '/overview') ||
+                (playerId !== 'overview' && currentPath === `/player/${playerId}`)) {
+                item.classList.add('select');
+            }
+        });
+
+        overviewLink.addEventListener('click', function (event) {
+            event.preventDefault();
+            window.location.href = '/overview';
+        });
+    });
+</script>
+
+
+</div>
+
+{% endblock %}
