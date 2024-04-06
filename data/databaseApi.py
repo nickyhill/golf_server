@@ -3,8 +3,8 @@ import os
 
 
 class DatabaseAPI:
-    DATABASE = '/var/www/apache-flask/app/data/GolfServer.db'
-    SCHEMA_FILE = '/var/www/apache-flask/app/data/GolfServer.sql'
+    DATABASE = '/var/www/apache-flask/data/GolfServer.db'
+    SCHEMA_FILE = '/var/www/apache-flask/data/GolfServer.sql'
 
     @staticmethod
     def init_db():

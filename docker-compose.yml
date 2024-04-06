@@ -1,19 +1,18 @@
 version: '3'
+
 services:
-  
-  sqlite3:
-    image: sqlite3:latest
-    stdin_open: true
-    tty: true
-    volumes:
-      - ./data/:/var/www/apache-flask/data/  
-  
+
   web:
-        build: .
-        ports:
-          - "80:80"
-        volumes:
-          - ./app:/var/www/apache-flask/app
-        restart: always
+    build: .
+    ports:
+      - "80:80"
+    volumes:
+      - ./app:/var/www/apache-flask/app
+      - type : bind
+        source: ./data
+        target: /var/www/apache-flask/data
+        read_only: false
+    restart: always
+    container_name: web
 
 

@@ -1,8 +1,8 @@
 # coding=utf-8
 
-from flask import render_template, flash, redirect, session, url_for, request
+from flask import render_template, redirect, request
 from app import app
-from .data.databaseApi import DatabaseAPI
+from data.databaseApi import DatabaseAPI
 
 
 @app.route('/')

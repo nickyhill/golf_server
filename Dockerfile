@@ -30,11 +30,8 @@ RUN chown -R www-data:www-data /var/run/apache2/ && \
     chmod 755 -R /var/run/apache2/
 
 # Copy over the wsgi file, run.py and the app
-COPY ./ /var/www/apache-flask/
-
-# App directory : set permissions
-RUN chown -R www-data /var/www/apache-flask/app/ && \
-    chmod 755 -R /var/www/apache-flask/app/
+COPY  ./*.wsgi /var/www/apache-flask/
+COPY  ./*.py /var/www/apache-flask/
 
 # Set permissions for copied files
 RUN chown -R www-data:www-data /var/www/apache-flask/ && \
@@ -60,7 +57,5 @@ RUN ln -sf /proc/self/fd/1 /var/log/apache2/access.log && \
 EXPOSE 80
 
 WORKDIR /var/www/apache-flask
-
-USER www-data
 
 CMD  /usr/sbin/apache2ctl -D FOREGROUND
