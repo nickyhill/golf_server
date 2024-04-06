@@ -39,7 +39,7 @@ def add_data():
         print("form hole: ", holes_played)
         DatabaseAPI.add_data(selected_players, scores, holes_played)
         DatabaseAPI.update_player_score(selected_players, scores, holes_played)
-        return redirect('/')
+        return redirect('/overview')
 
     # Render the add_player.html template for GET requests
     players = DatabaseAPI.get_players_name()
