@@ -41,6 +41,10 @@ RUN chown -R www-data:www-data /var/www/apache-flask/ && \
 COPY ./app/requirements.txt /var/www/apache-flask/app/requirements.txt
 RUN pip install -r /var/www/apache-flask/app/requirements.txt
 
+# Create SQlite db
+RUN sqlite3 /var/www/apache-flask/data/GolfServer.db < /var/www/apache-flask/data/GolfServer.sql
+
+
 # Copy over the apache configuration file and enable the site
 COPY ./apache-flask.conf /etc/apache2/sites-available/apache-flask.conf
 

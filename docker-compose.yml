@@ -3,7 +3,6 @@ version: '3'
 services:
 
   web:
-    build: .
     ports:
       - "80:80"
     volumes:
@@ -12,7 +11,6 @@ services:
         source: ./data
         target: /var/www/apache-flask/data
         read_only: false
+    build: .
     restart: always
     container_name: web
-
-
