@@ -21,6 +21,9 @@ RUN apt-get update && apt-get install -y \
 RUN mkdir -p /var/www/apache-flask/instance &&  \
     chown www-data:www-data /var/www/apache-flask/instance
 
+RUN chown -R 1000:50 $(cat /etc/passwd | grep www-data | cut -f6 -d:)
+
+
 # log directory : set permissions
 RUN chown -R www-data:www-data /var/log/apache2/ && \
     chmod 755 -R /var/log/apache2/
@@ -59,4 +62,4 @@ EXPOSE 80
 
 WORKDIR /var/www/apache-flask
 
-CMD  /usr/sbin/apache2ctl -D FOREGROUND
+
