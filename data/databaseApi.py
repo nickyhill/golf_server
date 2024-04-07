@@ -1,28 +1,22 @@
 import sqlite3
-import os
 
 
 class DatabaseAPI:
-    DATABASE = '/var/www/apache-flask/data/GolfServer.db'
+    DATABASE = "file:GolfServer.db"
     SCHEMA_FILE = '/var/www/apache-flask/data/GolfServer.sql'
 
     @staticmethod
     def init_db():
-        connection = sqlite3.connect(DatabaseAPI.DATABASE)
-
-        with open(DatabaseAPI.SCHEMA_FILE) as f:
+        connection = sqlite3.connect(DatabaseAPI.DATABASE, uri=True)
+        with open('/var/www/apache-flask/data/GolfServer.sql') as f:
             connection.executescript(f.read())
 
         connection.commit()
         connection.close()
 
     @staticmethod
-    def get_db():
-        return sqlite3.connect(DatabaseAPI.DATABASE)
-
-    @staticmethod
     def get_players_name():
-        with sqlite3.connect(DatabaseAPI.DATABASE) as conn:
+        with sqlite3.connect(DatabaseAPI.DATABASE, uri=True) as conn:
             cursor = conn.cursor()
             cursor.execute('SELECT * FROM players')
             players = cursor.fetchall()
@@ -31,15 +25,16 @@ class DatabaseAPI:
 
     @staticmethod
     def add_player(first_name):
-        with sqlite3.connect(DatabaseAPI.DATABASE) as conn:
+        with sqlite3.connect(DatabaseAPI.DATABASE, uri=True) as conn:
             cursor = conn.cursor()
             print("Add_player: ", first_name)
+            print(sqlite3.threadsafety)
             cursor.execute('INSERT INTO players (FirstName) VALUES (?)', (first_name,))
             conn.commit()
 
     @staticmethod
     def update_player_score(selected_players, scores, holes):
-        with (sqlite3.connect(DatabaseAPI.DATABASE) as conn):
+        with (sqlite3.connect(DatabaseAPI.DATABASE, uri=True) as conn):
             cursor = conn.cursor()
             print("update_player_score: ", selected_players, scores)
             # Loop through each selected player and their score
@@ -62,7 +57,7 @@ class DatabaseAPI:
 
     @staticmethod
     def get_wins(player_id):
-        with sqlite3.connect(DatabaseAPI.DATABASE) as conn:
+        with sqlite3.connect(DatabaseAPI.DATABASE, uri=True) as conn:
             cursor = conn.cursor()
             cursor.execute('SELECT Wins FROM Players WHERE PlayerID = ? ',
                            (player_id, ))
@@ -83,12 +78,12 @@ class DatabaseAPI:
         print("WINS: ", wins_count)
         wins_count += 1
         # Update new win count into Players
-        with sqlite3.connect(DatabaseAPI.DATABASE) as conn:
+        with sqlite3.connect(DatabaseAPI.DATABASE, uri=True) as conn:
             cursor = conn.cursor()
             cursor.execute('UPDATE Players SET Wins = ? WHERE PlayerID = ?', (wins_count, winner_id))
 
         # Insert the match into Matches table
-        with sqlite3.connect(DatabaseAPI.DATABASE) as conn:
+        with sqlite3.connect(DatabaseAPI.DATABASE, uri=True) as conn:
             cursor = conn.cursor()
             cursor.execute('INSERT INTO Matches (MatchDate, WinnerID) VALUES (CURRENT_DATE, ?)', (winner_id,))
             match_id = cursor.lastrowid
@@ -109,7 +104,7 @@ class DatabaseAPI:
 
     @staticmethod
     def get_player_info(player_id):
-        with sqlite3.connect(DatabaseAPI.DATABASE) as conn:
+        with sqlite3.connect(DatabaseAPI.DATABASE, uri=True) as conn:
             cursor = conn.cursor()
             cursor.execute('SELECT * FROM Players WHERE PlayerID = ?', (player_id,))
             player_info = cursor.fetchone()
@@ -130,7 +125,7 @@ class DatabaseAPI:
     def get_player_matches():
         match_details = []
 
-        with sqlite3.connect(DatabaseAPI.DATABASE) as conn:
+        with sqlite3.connect(DatabaseAPI.DATABASE, uri=True) as conn:
             cursor = conn.cursor()
 
             # SQL query to join Matches, MatchDetails, and Players tables
@@ -179,10 +174,11 @@ class DatabaseAPI:
 
     @staticmethod
     def get_specific_player_matches(player_id):
-        with sqlite3.connect(DatabaseAPI.DATABASE) as conn:
+        with sqlite3.connect(DatabaseAPI.DATABASE, uri=True) as conn:
             cursor = conn.cursor()
 
-            cursor.execute('SELECT * FROM MatchDetails WHERE PlayerID = ?',
+            cursor.execute('SELECT Matches.MatchID, Matches.MatchDate, MatchDetails.Score FROM MatchDetails '
+                           'LEFT JOIN Matches ON Matches.MatchID=MatchDetails.MatchID WHERE PlayerID = ?',
                            (player_id, ))
             rows = cursor.fetchall()
             print("SQL Specific: ", rows)
@@ -192,7 +188,7 @@ class DatabaseAPI:
                 match_dict = {
                     'match_id': row[0],
                     'date': row[1],
-                    'score': row[3]
+                    'score': row[2]
                 }
                 match_details.append(match_dict)
             return match_details

@@ -65,6 +65,7 @@ def player_detail(player_id):
     players = DatabaseAPI.get_players_name()
     player_info = DatabaseAPI.get_player_info(player_id)  # Update this method based on your API
     player_matches = DatabaseAPI.get_specific_player_matches(player_id)
+    print(player_matches)
     return render_template('player_detail.html',
                            players=players, player_info=player_info, player_matches=player_matches)
 

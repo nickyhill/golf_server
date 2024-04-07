@@ -21,9 +21,6 @@ RUN apt-get update && apt-get install -y \
 RUN mkdir -p /var/www/apache-flask/instance &&  \
     chown www-data:www-data /var/www/apache-flask/instance
 
-RUN chown -R 1000:50 $(cat /etc/passwd | grep www-data | cut -f6 -d:)
-
-
 # log directory : set permissions
 RUN chown -R www-data:www-data /var/log/apache2/ && \
     chmod 755 -R /var/log/apache2/
@@ -35,6 +32,7 @@ RUN chown -R www-data:www-data /var/run/apache2/ && \
 # Copy over the wsgi file, run.py and the app
 COPY  ./*.wsgi /var/www/apache-flask/
 COPY  ./*.py /var/www/apache-flask/
+COPY ./app /var/www/apache-flask/
 
 # Set permissions for copied files
 RUN chown -R www-data:www-data /var/www/apache-flask/ && \
@@ -61,5 +59,3 @@ RUN ln -sf /proc/self/fd/1 /var/log/apache2/access.log && \
 EXPOSE 80
 
 WORKDIR /var/www/apache-flask
-
-
