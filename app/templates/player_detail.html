@@ -9,6 +9,8 @@
                 <p class="h6" style="display: inline-block; padding-right: 10px">Score: {{ player_info.over_score }}</p>
                 <p class="h6" style="display: inline-block; border-left: 2px solid #ccc; padding-left: 10px">Holes played: {{ player_info.holes_play }}</p>
             </div>
+            {% set avg = player_info.over_score / player_info.holes_play %}
+            <p class="h6" style="display: inline-block; padding-right: 10px">Score per Hole: {{ '%0.2f' % avg|float }}</p>
             <p class="h6">Total Wins: {{ player_info.wins }}</p>
         </div>
         <div class="container" style="margin-top: 35px ">
