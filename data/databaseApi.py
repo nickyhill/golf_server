@@ -7,8 +7,8 @@ class DatabaseAPI:
 
     @staticmethod
     def init_db():
-        connection = sqlite3.connect(DatabaseAPI.DATABASE, uri=True)
-        with open('/var/www/apache-flask/data/GolfServer.sql') as f:
+        connection = sqlite3.connect('file:GolfServer.db', uri=True)
+        with open('data/GolfServer.sql') as f:
             connection.executescript(f.read())
 
         connection.commit()
