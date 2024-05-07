@@ -2,7 +2,7 @@ import sqlite3
 
 
 class DatabaseAPI:
-    DATABASE = "file:GolfServer.db"
+    DATABASE = 'file:GolfServer.db'
     SCHEMA_FILE = '/var/www/apache-flask/data/GolfServer.sql'
 
     @staticmethod

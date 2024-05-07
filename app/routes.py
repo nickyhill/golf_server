@@ -49,22 +49,24 @@ def add_data():
 
 @app.route('/overview', methods=['GET'])
 def leaderboard():
-    playersscore = DatabaseAPI.get_player_score()
-    playersname = DatabaseAPI.get_players_name()
-    playersname = [player[1] for player in playersname]
+    players_score = DatabaseAPI.get_player_score()
     players = DatabaseAPI.get_players_name()
+    players_name = [player[1] for player in players]
     player_matches = DatabaseAPI.get_player_matches()
 
     return render_template('leaderboard.html',
-                           players=players, playersname=playersname,
-                           playersscore=playersscore, player_matches=player_matches)
+                           players=players, playersname=players_name,
+                           playersscore=players_score, player_matches=player_matches)
 
 
 @app.route('/player/<int:player_id>')
 def player_detail(player_id):
     players = DatabaseAPI.get_players_name()
     player_info = DatabaseAPI.get_player_info(player_id)
+    print("playerinfo: ", player_info)
     player_matches = DatabaseAPI.get_specific_player_matches(player_id)
+    if player_info['holes_play'] == 0:
+        return redirect('/overview')
     print(player_matches)
     return render_template('player_detail.html',
                            players=players, player_info=player_info, player_matches=player_matches)
